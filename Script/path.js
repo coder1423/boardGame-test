@@ -1,3 +1,5 @@
+// @ts-check
+
 /** 지역
  * @typedef {Object} IDistrict
  * @property {Function} createNeighborhood

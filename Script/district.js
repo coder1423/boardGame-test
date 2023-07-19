@@ -1,3 +1,5 @@
+// @ts-check
+
 /** 좌표
  * @typedef {Object} ICoordinates
  * @property {Number} x
@@ -12,6 +14,10 @@
  * @typedef {Object} INeighborhood
  */
 
+/**
+ * @typedef {Object} IUnit
+ */
+
 /** 지역 */
 export class District {
   /** 
@@ -23,12 +29,12 @@ export class District {
     this.#coordinates = coordinates;
   }
 
-  /** @type {Unit[]} */
+  /** @type {IUnit[]} */
   #units;
 
   /** 지역의 유닛을 제거하고 해당 유닛 객체 반환
    * @param {Number} index
-   * @return {Unit}
+   * @return {IUnit}
    */
   unitRelocation(index=0) {
     return this.#units.splice(index, 1)[0];
@@ -49,9 +55,10 @@ export class District {
   #coordinates;
 
   /** *HTML* 캔버스에 지역정보 그리기
+   * @TODO 환경출력, 유닛 출력 순으로 출력하기
    * @param {any} ctx
    */
-  drawing(ctx) { // TODO 환경출력, 유닛 출력 순으로 출력하기
+  drawing(ctx) {
     this.#coordinates
   }
 

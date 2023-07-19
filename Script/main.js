@@ -47,8 +47,7 @@ class Unit {
 // @ts-ignore
 const ctx = document.getElementById('canvas').getContext("2d");
 
-// TODO 딕셔러리로 바꿀 수 있을지 검토필요.
-/** @type {District[]} */
+/** @TODO 딕셔러리로 바꿀 수 있을지 검토필요. @type {District[]} */
 const district = [
   new District( new Environment(), new Coordinates(10, 500) ),
   new District( new Environment(), new Coordinates(10, 500) ),
@@ -61,8 +60,7 @@ const district = [
   new District( new Environment(), new Coordinates(10, 500) ),
 ]
 
-// TODO 딕셔러리로 바꿀 수 있을지 검토필요.
-/** @type {Path[]} */
+/** @TODO 딕셔러리로 바꿀 수 있을지 검토필요. @type {Path[]} */
 const path = [
   new Path(district, 0, 1),
   new Path(district, 1, 2),

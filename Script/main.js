@@ -2,7 +2,7 @@
 
 // @ts-check
 
-/** 화면상의 출력을 위한 x, y의 좌표쌍 */
+/** 화면상의 출력을 위한 x, y 좌표 */
 class Coordinates {
   /**
    * @param {Number} x
@@ -158,7 +158,7 @@ class District {
   #environment;
 
   /** @type {Neighborhood[]} */
-  #neighborhood;
+  #neighborhood = [];
 
   /** @param {Neighborhood} neighborhood */
   createNeighborhood(neighborhood) {
@@ -185,8 +185,34 @@ class District {
   }
 }
 
-/** @type {District[]} */
-const district = [];
-
 // @ts-ignore
 const ctx = document.getElementById('canvas').getContext("2d");
+
+/** @type {District[]} */
+const district = [
+  new District(new Environment("#b4b4b4"), new Coordinates(10, 500)),
+  new District(new Environment("#b4b4b4"), new Coordinates(10, 500)),
+  new District(new Environment("#b4b4b4"), new Coordinates(10, 500)),
+  new District(new Environment("#b4b4b4"), new Coordinates(10, 500)),
+  new District(new Environment("#b4b4b4"), new Coordinates(10, 500)),
+
+  new District(new Environment("#b4b4b4"), new Coordinates(10, 500)),
+  new District(new Environment("#b4b4b4"), new Coordinates(10, 500)),
+  new District(new Environment("#b4b4b4"), new Coordinates(10, 500)),
+]
+
+const path = [
+  new Path(district, 0, 1),
+  new Path(district, 1, 2),
+  new Path(district, 2, 3),
+  new Path(district, 3, 4),
+  new Path(district, 4, 5),
+
+  new Path(district, 2, 6),
+  new Path(district, 2, 7),
+  new Path(district, 3, 7),
+  new Path(district, 1, 6),
+  new Path(district, 6, 7),
+
+  new Path(district, 7, 4),
+]

@@ -28,8 +28,8 @@ class Neighborhood {
 export class Path {
   /** 경로 생성 및 *지역 연결*
    * @param {IDistrict[]} district
-   * @param {Number} index1 연결을 시작할 지역의 인덱스
-   * @param {Number} index2 연결할 지역의 인덱스
+   * @param {Number} index1 연결을 시작할 지역 객체
+   * @param {Number} index2 연결할 지역 객체
    */
   constructor(district, index1, index2) {
     this.#starting_district = district[index1];
@@ -44,11 +44,19 @@ export class Path {
   /**  @type {IDistrict} */
   #end_district;
 
+  /** @type {String} 16진수 RGB */
+  color = "#dcdcdc";
+
   /** *HTML* 두 지역 사이의 연결선 그리기 
-   * @param {any} ctx
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {Number} lineWidth 
    */
-  drawing(ctx) {
+  drawing(ctx, lineWidth) {
+    ctx.beginPath();
     this.#starting_district.moveTo(ctx);
     this.#end_district.lineTo(ctx);
+    ctx.strokeStyle = this.color; 
+    ctx.lineWidth = lineWidth;
+    ctx.stroke();
   }
 }

@@ -2,9 +2,9 @@
 
 // @ts-check
 
-import { District } from "./district";
-import { Environment } from "./environment";
-import { Path } from "./path";
+import { District } from "./district.js";
+import { Company, Environment, Unit } from "./company.js";
+import { Path } from "./path.js";
 
 /** 화면상의 출력을 위한 x, y 좌표 */
 class Coordinates {
@@ -27,37 +27,20 @@ class Coordinates {
   }
 }
 
-/** 기업 */
-class Company {
-  /** @param {String} color 16진수 RGB */
-  constructor(color) {
-    this.#color = color;
-  }
-
-  /** @type {String} 16진수 RGB */
-  #color;
-}
-
-/** 개별 유닛 */
-class Unit {
-  /** @type {Company} */
-  #company;
-}
-
-// @ts-ignore
-const ctx = document.getElementById('canvas').getContext("2d");
-
+ /** @ts-ignore @type {CanvasRenderingContext2D} */ 
+ const ctx = document.getElementById('canvas').getContext("2d");
+ 
 /** @TODO 딕셔러리로 바꿀 수 있을지 검토필요. @type {District[]} */
 const district = [
-  new District( new Environment(), new Coordinates(10, 500) ),
-  new District( new Environment(), new Coordinates(10, 500) ),
-  new District( new Environment(), new Coordinates(10, 500) ),
-  new District( new Environment(), new Coordinates(10, 500) ),
-  new District( new Environment(), new Coordinates(10, 500) ),
+  new District( new Environment(), new Coordinates(50, 700) ),
+  new District( new Environment(), new Coordinates(220, 500) ),
+  new District( new Environment(), new Coordinates(350, 350) ),
+  new District( new Environment(), new Coordinates(650, 350) ),
+  new District( new Environment(), new Coordinates(780, 500) ),
 
-  new District( new Environment(), new Coordinates(10, 500) ),
-  new District( new Environment(), new Coordinates(10, 500) ),
-  new District( new Environment(), new Coordinates(10, 500) ),
+  new District( new Environment(), new Coordinates(950, 700) ),
+  new District( new Environment(), new Coordinates(350, 650) ),
+  new District( new Environment(), new Coordinates(650, 650) ),
 ]
 
 /** @TODO 딕셔러리로 바꿀 수 있을지 검토필요. @type {Path[]} */
@@ -76,3 +59,11 @@ const path = [
 
   new Path(district, 7, 4),
 ]
+
+/** @TODO 딕셔러리로 바꿀 수 있을지 검토필요. @type {Company[]} */
+const company = [
+  new Company("#66b8ff"),
+]
+
+path.forEach(elem => elem.drawing(ctx, 5));
+district.forEach(elem => elem.drawing(ctx, 30, 25));

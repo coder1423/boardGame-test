@@ -7,7 +7,7 @@
  */
 
 /**
- * @typedef { (ctx: CanvasRenderingContext2D, line_color: String)=> void } IDrawing
+ * @typedef { (ctx: CanvasRenderingContext2D)=> void } IDrawing
  */
 
 /** 지역
@@ -15,6 +15,7 @@
  * @property {Function} createNeighborhood
  * @property {ICoordinates} coordinates
  * @property {IDrawing} drawing
+ * @property {Boolean} moveable
  */
 
 /** 연결된 주변 지역 */
@@ -33,6 +34,16 @@ class Neighborhood {
   /** @type {Path} */
   #path;
 
+  /** 그냥 '그렇습니다'라고 말해. */
+  getMoveable() {
+    return true;
+  }
+
+  /** @param {Boolean} moveable  */
+  setMoveable(moveable) {
+    this.#district.moveable = moveable ;
+  }
+
   /** *HTML*
    * @TODO 환경출력, 유닛 출력 순으로 출력하기
    * @param {CanvasRenderingContext2D} ctx
@@ -40,7 +51,7 @@ class Neighborhood {
    */
   drawing(ctx, line_color) {
     this.#path.drawing(ctx, line_color);
-    this.#district.drawing(ctx, line_color);
+    this.#district.drawing(ctx);
   }
 }
 

@@ -87,11 +87,8 @@ export class Unit {
   drawing(ctx, coordinates, size, line_width, line_color) {
     ctx.beginPath();
     ctx.arc(coordinates.x, coordinates.y, size, 0, Math.PI * 2);
-    ctx.strokeStyle = '#1a1a1a'; 
-    ctx.lineWidth = line_width + 5;
-    ctx.stroke();
     ctx.strokeStyle = line_color; 
-    ctx.lineWidth = line_width;
+    ctx.lineWidth = line_width + 1;
     ctx.stroke();
     ctx.fillStyle = this.company.color;
     ctx.fill();

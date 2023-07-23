@@ -71,7 +71,7 @@ const ctx = canvas.getContext("2d");
 
 
 path.forEach(elem => elem.drawing(ctx, '#000000'));
-district.forEach(elem => elem.drawing(ctx, '#000000'));
+district.forEach(elem => elem.drawing(ctx));
 
 /** @type {District|null} */
 let selected_district = null;
@@ -89,10 +89,11 @@ function eventMouseClick(event) {
       if (selected_district !== null) {
         if (selected_district === click_district) { // 선택된 지역 재선택
           selected_district.선택 += 1;
-          selected_district.drawing(ctx, '#dcdcdc');
+          selected_district.주변지역이이동가능한지검사(ctx);
+          selected_district.drawing(ctx);
           return;
         }
-        if (selected_district.선택 > 0 && click_district.이동가능) { // 유닛이동
+        if (selected_district.선택 > 0 && click_district.moveable) { // 유닛이동
           click_district.unitPlacement( selected_district.unitRelocation() );
         }
         selected_district.선택해제(ctx); // 선택지역변경

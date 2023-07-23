@@ -7,12 +7,18 @@
  */
 
 /**
+ * @typedef { (ctx: CanvasRenderingContext2D, coordinates: ICoordinates, size: Number, line_width: Number, line_color: String)=> void } IDrawing
+ */
+
+/**
  * @typedef {Object} IEnvironment
  * @property {String} color 16진수 RGB
+ * @property {IDrawing} drawing
  */
 
 /** 연결된 주변 지역
  * @typedef {Object} INeighborhood
+ * @property {(ctx: CanvasRenderingContext2D, line_color: String)=> void} drawing
  */
 
 /** 
@@ -23,6 +29,7 @@
 /**
  * @typedef {Object} IUnit
  * @property {ICompany} company
+ * @property {IDrawing} drawing
  */
 
 /** 지역 */
@@ -46,6 +53,12 @@ export class District {
   unitRelocation(index=0) {
     return this.#units.splice(index, 1)[0];
   }
+  /**
+   * @param {IUnit} unit
+   */
+  unitPlacement(unit) {
+    this.#units.push(unit);
+  }
 
   /** @type {IEnvironment} */
   #environment;
@@ -61,38 +74,82 @@ export class District {
   /** @type {ICoordinates} */
   #coordinates;
 
+  get coordinates() {
+    return this.#coordinates;
+  }
+
   /** *HTML* 캔버스에 지역정보 그리기
    * @TODO 환경출력, 유닛 출력 순으로 출력하기
    * @param {CanvasRenderingContext2D} ctx
-   * @param {Number} environment_size 환경출력크기
-   * @param {Number} unit_size 유닛출력크기
+   * @param {String} line_color
    */
-  drawing(ctx, environment_size, unit_size) {
-    ctx.beginPath();
-    ctx.strokeStyle = this.#environment.color; 
-    ctx.arc(this.#coordinates.x, this.#coordinates.y, environment_size, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.fillStyle = this.#environment.color;
-    ctx.fill();
+  drawing(ctx, line_color) {
+    this.#environment.drawing(ctx, this.#coordinates, environment_size, line_width, line_color);
+    this.#units.forEach( (unit, index) => unit.drawing(ctx, this.#coordinates, unit_size - (index * line_width) / 2, line_width, line_color) );
+  }
 
-    if (this.#units.length > 0) {
-      ctx.arc(this.#coordinates.x, this.#coordinates.y, unit_size, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.fillStyle = this.#units[0].company.color;
-      ctx.fill();
+  /**
+   * @param {ICoordinates} mouse
+   */
+  checkMouseContact(mouse) {
+    if ( environment_size >= calcTwoPointDistance(this.#coordinates, mouse) ) {
+      return true;
     }
+    return false;
   }
 
-  /** *HTML* 자신의 좌표를 경로 그리기 시작점으로 설정
+  /** 0은 지역을 의미, 1부터는 #units의 0번째부터의 인덱스.
+   * @type {Number}
+   */
+  #선택 = 0;
+
+  /**
+   * 0은 지역을 의미, 1부터는 #units의 0번째부터의 인덱스. 
+   * @param {Number} parameter 
+   */
+  set 선택(parameter) {
+    this.#선택 = Math.min(this.#units.length, parameter);
+  }
+  get 선택() {
+    return this.#선택;
+  }
+
+  이동가능 = false;
+
+  /** *HTML*
    * @param {CanvasRenderingContext2D} ctx
    */
-  moveTo(ctx) {
-    ctx.moveTo(this.#coordinates.x, this.#coordinates.y);
+  지역선택(ctx) {
+    this.#선택 = 0;
+    this.#neighborhood.forEach(elem => {
+      elem.drawing(ctx, 주변지역);
+    })
+    this.drawing(ctx, 선택됨)
   }
-  /** *HTML* 자신의 좌표를 경로 그리기 도착점으로 설정 
+  /** *HTML*
    * @param {CanvasRenderingContext2D} ctx
    */
-  lineTo(ctx) {
-    ctx.lineTo(this.#coordinates.x, this.#coordinates.y);
+  선택해제(ctx) {
+    this.#neighborhood.forEach(elem => {
+      elem.drawing(ctx, 비활성);
+    })
+    this.drawing(ctx, 비활성)
   }
+}
+
+const environment_size = 30;
+const unit_size = 20;
+const line_width = 10;
+
+const 비활성 = '#000000';
+const 선택됨 = '#dcdcdc';
+const 주변지역 = '#0094ff';
+const 사용가능 = '#06b00b';
+
+/**
+ * @param {ICoordinates} point1
+ * @param {ICoordinates} point2
+ */
+function calcTwoPointDistance(point1, point2) {
+  return ((point2.x - point1.x)**2 + (point2.y - point1.y)**2)**0.5;
 }
